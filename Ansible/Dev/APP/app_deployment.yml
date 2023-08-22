@@ -1,7 +1,7 @@
 ---
 - name: My first playbook
   user: ansible
-  hosts: inventory.ini
+  hosts: Dev-APP
   become: yes
   tasks:
    - name: Install GIT
