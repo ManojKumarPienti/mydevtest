@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh '''
                 sudo su -
-                sudo -u ansible ansible-playbook -i ${inventoryPath} ${playbookPath} -vvv
+                ansible ansible-playbook -i ${inventoryPath} ${playbookPath}
                 '''
                 }
             }
