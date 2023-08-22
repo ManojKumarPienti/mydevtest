@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Run Ansible Playbook') {
+            steps {
+                script {
+                    def playbookPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/APP/app_deployment.yml"
+                    def inventoryPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/inventory.ini"
+                    
+                    sh "ansible-playbook -i ${inventoryPath} ${playbookPath}"
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo "Ansible playbook executed successfully"
+        }
+        failure {
+            echo "Ansible playbook execution failed"
+        }
+    }
+}

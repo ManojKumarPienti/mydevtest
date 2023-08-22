@@ -1,0 +1,7 @@
+---
+- name: My first playbook
+  user: ansible
+  become: yes
+  tasks:
+   - name: Install GIT
+     yum: pkg=httpd state=installed
