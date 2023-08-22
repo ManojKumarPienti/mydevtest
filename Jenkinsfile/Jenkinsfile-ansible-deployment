@@ -7,17 +7,24 @@ pipeline {
             }
         }
         
-        stage('Run Ansible Playbook') {
+        stage('Define path') {
             steps {
                 script {
                     def playbookPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/APP/app_deployment.yml"
                     def inventoryPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/inventory.ini"
-                    
-                    sh "ansible-playbook -i ${inventoryPath} ${playbookPath}"
                 }
             }
         }
-    }
+        stage('Deploying') {
+            steps {
+                sh '''
+                sudo su -
+                su - ansible           
+                ansible-playbook -i ${inventoryPath} ${playbookPath} -vvv
+                '''
+                }
+            }
+        }
     post {
         success {
             echo "Ansible playbook executed successfully"
