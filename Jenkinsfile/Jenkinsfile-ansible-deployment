@@ -17,10 +17,8 @@ pipeline {
         }
         stage('Deploying') {
             steps {
-                sh '''
-                sudo su -
-                su - ansible           
-                ansible-playbook -i ${inventoryPath} ${playbookPath} -vvv
+                sh '''          
+                sudo -u ansible ansible-playbook -i ${inventoryPath} ${playbookPath} -vvv
                 '''
                 }
             }
