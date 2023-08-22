@@ -1,5 +1,11 @@
 pipeline {
     agent {label "Ansible"}
+    
+    environment {
+        playbookPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/APP/app_deployment.yml"
+        inventoryPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/inventory.ini"
+    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -7,23 +13,15 @@ pipeline {
             }
         }
         
-        stage('Define path') {
-            steps {
-                script {
-                    def playbookPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/APP/app_deployment.yml"
-                    def inventoryPath = "/var/lib/jenkins/workspace/${JOB_NAME}/Ansible/Dev/inventory.ini"
-                }
-            }
-        }
         stage('Deploying') {
             steps {
                 sh '''
-                sudo su -
-                ansible ansible-playbook -i ${inventoryPath} ${playbookPath}
+                sudo -u ansible ansible-playbook -i ${inventoryPath} ${playbookPath}
                 '''
-                }
             }
         }
+    }
+    
     post {
         success {
             echo "Ansible playbook executed successfully"
