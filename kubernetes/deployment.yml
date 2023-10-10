@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devops-app
+  name: ecr-app
 spec:
   replicas: 1
-  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: devops-app
+      app: ecr-app
   template:
     metadata:
       labels:
-        app: devops-app
+        app: ecr-app
     spec:
       containers:
-      - image: nginx
-        name: devops-app
-        ports:
-        - containerPort: 80
+        - name: nginx
+          image: 159831708372.dkr.ecr.us-east-1.amazonaws.com/devops:nginx-v1
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: ecr-credentials-secret  
